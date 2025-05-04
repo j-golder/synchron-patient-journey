@@ -1,0 +1,286 @@
+"use client";
+
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Info,
+  ArrowRight,
+  ArrowLeft,
+  ExternalLink,
+  ClipboardCheck,
+  Brain,
+  BedDouble,
+  Cpu
+} from "lucide-react";
+
+const brand = {
+  primary: "#00391E",
+  accent: "#008D6E",
+  cta: "#16B66F",
+  brightGreen: "#69e297",
+};
+
+const fallbackIcon = ClipboardCheck;
+
+const sectionIcons = {
+  "Pre‑Procedure": ClipboardCheck,
+  "Implantation": Brain,
+  "Post‑Procedure": BedDouble,
+  "System Activation": Cpu,
+};
+
+interface StepSection {
+  id: number;
+  title: string;
+  steps: string[];
+  color: string;
+}
+
+const stepSections: StepSection[] = [
+  {
+    id: 1,
+    title: "Pre‑Procedure",
+    steps: [
+      "Medical Evaluation",
+      "Brain Imaging",
+      "Patient Consultation",
+      "Pre‑surgical Preparation",
+    ],
+    color: "#E6F4EE",
+  },
+  {
+    id: 2,
+    title: "Implantation",
+    steps: [
+      "Anesthesia",
+      "Vein Access",
+      "Catheter Navigation",
+      "Stentrode™ Deployment",
+      "Lead Wire",
+      "Transmitter Implant",
+    ],
+    color: "#D5EFE5",
+  },
+  {
+    id: 3,
+    title: "Post‑Procedure",
+    steps: ["Hospital Recovery", "Home Recovery", "Device Integration"],
+    color: "#C5E9DB",
+  },
+  {
+    id: 4,
+    title: "System Activation",
+    steps: ["Configuration", "Signal Training", "Practice", "Optimization"],
+    color: "#B5E3D1",
+  },
+];
+
+const stepDescriptions: Record<string, Record<string, string>> = {
+  "Pre‑Procedure": {
+    "Medical Evaluation": "Comprehensive health screening to confirm suitability.",
+    "Medical Evaluation_risk": "May identify contraindications or health issues that delay or prevent eligibility.",
+    "Brain Imaging": "Detailed scans map brain vasculature for optimal placement.",
+    "Brain Imaging_risk": "Imaging may uncover unexpected anatomical challenges.",
+    "Patient Consultation": "Goal‑setting and Q&A with your clinical team.",
+    "Pre‑surgical Preparation": "Medication instructions and day‑of logistics.",
+    "Pre‑surgical Preparation_risk": "Medication errors or lack of preparation could impact procedure success."
+  },
+  "Implantation": {
+    "Anesthesia": "Local with sedation or general anesthesia for comfort.",
+    "Anesthesia_risk": "Allergic reactions or anesthesia complications may occur.",
+    "Vein Access": "Small neck incision to access the jugular vein.",
+    "Vein Access_risk": "Risk of bleeding, infection, or vein injury.",
+    "Catheter Navigation": "Guiding a catheter to the target brain vessel.",
+    "Catheter Navigation_risk": "Navigation may damage vessel walls or lead to incorrect placement.",
+    "Stentrode™ Deployment": "Deploying the Stentrode adjacent to motor cortex.",
+    "Stentrode™ Deployment_risk": "Improper deployment could affect device function or safety.",
+    "Lead Wire": "Threading the lead wire from brain to chest.",
+    "Lead Wire_risk": "Potential for wire migration or discomfort.",
+    "Transmitter Implant": "Implanting the chest transmitter and connecting lead wire.",
+    "Transmitter Implant_risk": "Risk of surgical site infection or hardware issues."
+  },
+  "Post‑Procedure": {
+    "Hospital Recovery": "1‑3 days of monitoring before discharge.",
+    "Hospital Recovery_risk": "Possible early complications may require extended stay.",
+    "Home Recovery": "4‑6 weeks of healing with follow‑ups.",
+    "Home Recovery_risk": "Patient noncompliance or improper care could delay healing.",
+    "Device Integration": "Stentrode seats into vessel wall for stability.",
+    "Device Integration_risk": "Incomplete integration could impair signal quality."
+  },
+  "System Activation": {
+    "Configuration": "External hardware paired to implanted device.",
+    "Signal Training": "Calibrating the system to your brain signals.",
+    "Practice": "Regular sessions to refine control.",
+    "Optimization": "Ongoing tweaks to maximize performance."
+  }
+};
+
+export default function DeliverySystemFlowchartWrapper() {
+  const [showFlow, setShowFlow] = useState(false);
+
+  if (showFlow) {
+    return <DeliverySystemFlowchart onBack={() => setShowFlow(false)} />;
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center text-center space-y-6 py-20 px-6">
+      <h1 className="text-3xl md:text-4xl font-bold text-[#00391E] max-w-3xl">
+        How Does Synchron's BCI Delivery System Work?
+      </h1>
+      <p className="max-w-xl text-gray-600">
+        Synchron's Stentrode™ is a groundbreaking brain-computer interface (BCI) that bypasses open brain surgery by being implanted through blood vessels. This innovative technology enables people with severe paralysis to control digital devices—using thought alone.
+      </p>
+      <div className="flex gap-4">
+        <button
+          onClick={() => setShowFlow(true)}
+          className="px-6 py-3 bg-[#00391E] text-white rounded-full text-base font-semibold hover:bg-white hover:text-[#00391E] border border-[#00391E] transition-colors duration-200"
+        >
+          Explore the Delivery Journey
+        </button>
+        <a
+          href="https://synchron.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#00391E] underline hover:text-[#005f45] flex items-center"
+        >
+          Visit Synchron
+        </a>
+      </div>
+      <p className="text-xs text-center text-gray-500 max-w-lg mx-auto pt-4">
+        This page was created independently as a fun community concept. No official Synchron endorsement was received, no budget was provided, and no office snacks were consumed in the making of it.
+        <br />
+        <br />Built by <a href="https://www.vitaely.me/jonahgolder" target="_blank" rel="noopener noreferrer" className="underline text-[#00391E]">Jonah Golder</a><br />Connect with me on <a href="https://www.linkedin.com/in/jonahgolder/" target="_blank" rel="noopener noreferrer" className="underline text-[#00391E]">LinkedIn</a>.<br /><br />
+      </p>
+    </div>
+  );
+}
+
+function DeliverySystemFlowchart({ onBack }: { onBack: () => void }) {
+  const [activeStep, setActiveStep] = useState<{
+    section: StepSection;
+    step: string;
+  } | null>(null);
+
+  return (
+    <div className="space-y-6 font-sans">
+      <Button
+        onClick={onBack}
+        size="sm"
+        className="gap-1 rounded-full px-4 py-3 mt-2 bg-[#00391E] text-white hover:bg-white hover:text-[#00391E] border border-[#00391E] transition-colors duration-200"
+      >
+        <ArrowLeft size={16} /> Back
+      </Button>
+
+      <Card className="p-4 md:p-6 lg:p-8 shadow-lg">
+        <div className="space-y-2 text-center mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold" style={{ color: brand.primary }}>
+            How Does Synchron's BCI Delivery System Work?
+          </h2>
+          <p className="text-gray-600">Click any step to learn more</p>
+        </div>
+
+        <div className="overflow-x-auto pb-4">
+          <div className="flex items-start gap-6 min-w-[900px]">
+            {stepSections.map((section, secIdx) => {
+              const Icon = sectionIcons[section.title] || fallbackIcon;
+              return (
+                <React.Fragment key={section.id}>
+                  <div className="flex flex-col items-center gap-3">
+                    <Icon className="text-gray-500 mb-1" />
+                    <h3 className="font-semibold" style={{ color: brand.primary }}>
+                      {section.title}
+                    </h3>
+                    <div className="flex flex-col gap-2">
+                      {section.steps.map((step, stepIdx) => (
+                        <motion.div whileTap={{ scale: 0.96 }} key={step}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="whitespace-nowrap border-gray-300 hover:bg-gray-50 font-sans rounded-full px-4"
+                            style={{
+                              borderColor:
+                                activeStep?.section.id === section.id && activeStep.step === step
+                                  ? brand.accent
+                                  : "#ccc",
+                              backgroundColor:
+                                activeStep?.section.id === section.id && activeStep.step === step
+                                  ? section.color
+                                  : "white",
+                              color: "black",
+                            }}
+                            onClick={() => setActiveStep({ section, step })}
+                          >
+                            <span className="mr-1 font-mono text-xs text-gray-600">
+                              {stepSections
+                                .slice(0, secIdx)
+                                .reduce((acc, s) => acc + s.steps.length, 0) + stepIdx + 1}.
+                            </span>
+                            {step}
+                          </Button>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {secIdx !== stepSections.length - 1 && (
+                    <div className="my-2 flex items-center justify-center">
+                      <ArrowRight className="text-gray-400" />
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeStep ? activeStep.step : "placeholder"}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+          >
+            {activeStep ? (
+              <Card
+                className="p-5 bg-gray-50 border-l-4 mt-4"
+                style={{ borderColor: activeStep.section.color }}
+              >
+                <div className="flex gap-3">
+                  <Info className="mt-1 text-gray-500 shrink-0" />
+                  <CardContent className="p-0 space-y-1">
+                    <h4 className="font-bold" style={{ color: brand.primary }}>
+                      {activeStep.step}
+                    </h4>
+                    <p>{stepDescriptions[activeStep.section.title][activeStep.step]}</p>
+
+                    {stepDescriptions[activeStep.section.title][`${activeStep.step}_risk`] && (
+                      <div className="mt-3">
+                        <strong className="text-red-600">⚠ Possible Risk:</strong>
+                        <p className="text-sm text-red-700 mt-1">
+                          {stepDescriptions[activeStep.section.title][`${activeStep.step}_risk`]}
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </div>
+              </Card>
+            ) : (
+              <p className="text-center text-sm text-gray-500 mt-4">
+                Select a step to view details.
+              </p>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </Card>
+
+      <p className="text-xs text-center text-gray-500 max-w-lg mx-auto pt-6">
+        This page was created independently as a fun community concept. No official Synchron endorsement was received, no budget was provided, and no office snacks were consumed in the making of it.
+        <br /><br />
+        Built by <a href="https://www.vitaely.me/jonahgolder" target="_blank" rel="noopener noreferrer" className="underline text-[#00391E]">Jonah Golder</a><br />
+        Connect with me on <a href="https://www.linkedin.com/in/jonahgolder/" target="_blank" rel="noopener noreferrer" className="underline text-[#00391E]">LinkedIn</a>.
+      </p>
+    </div>
+  );
+}
